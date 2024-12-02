@@ -3,6 +3,8 @@ const app     =   express()
 const port   = 3000
 const route  = require("./router/index.route")
 
+const cors = require('cors');
+app.use(cors());
 
 route(app)
 
