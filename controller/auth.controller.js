@@ -22,6 +22,7 @@ class AuthController{
             const token = jwt.sign({id: farmer.id, role: 'farmer'}, process.env.JWT_SECRET);
             res.json(buildResponse({
                 token: token,
+                id: farmer.ID,
                 username: farmer.Username,
                 name: farmer.Name,
                 address: farmer.Address,
@@ -53,7 +54,7 @@ class AuthController{
             const token = jwt.sign({id: customer.id, role: 'customer'}, process.env.JWT_SECRET);
             res.json(buildResponse({
                 token: token,
-                id: customer.id,
+                id: customer.ID,
                 username: customer.Username,
                 name: customer.Name,
                 address: customer.Address,
