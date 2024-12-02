@@ -4,32 +4,7 @@ const BaseModel = require('./base.model');
 
 class CustomerModel extends BaseModel{
   constructor(){
-    super('CUSTOMER', {
-      ID: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
-      Name: {
-        type: DataTypes.STRING,
-      },
-      Phone_number: {
-        type: DataTypes.STRING,
-      },
-      Balance:{
-        type: DataTypes.INTEGER,
-      },
-      Address:{
-        type: DataTypes.STRING,
-      },
-      Username:{
-        type: DataTypes.STRING,
-      },
-      Password:{
-          type: DataTypes.STRING,
-      },
-    });
-  }
+    super('CUSTOMER');}
 }
 
 module.exports = new CustomerModel();

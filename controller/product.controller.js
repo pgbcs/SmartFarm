@@ -7,12 +7,12 @@ class ProductController{
             const page = parseInt(req.query.page) || 1;
             const perPage= parseInt(req.query.perPage) || 10;
 
-            const {count, rows} = await productModel.findAndCountAll({
+            const [count, rows] = await productModel.findProductNotSold({
                 offset: (page-1)*perPage,
                 limit: perPage
             });
 
-            const totalPages = Math.ceil(count/perPage);
+            const totalPages =  Math.ceil(count/perPage);
             res.json(buildResponse(rows, "List product", 200, {
                 metaInfo: {
                     current: page,
@@ -32,11 +32,7 @@ class ProductController{
     async getProductById(req, res){
         try{
             const id = req.query.id;
-            const product = await productModel.findOne({
-                where: {
-                    id: id
-                }
-            });
+            const product = await productModel.findOne({id: id});
             res.json(buildResponse(product, "Product detail", 200));
         }
         catch(err){
