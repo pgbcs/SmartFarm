@@ -1,7 +1,7 @@
 const buildResponse = require('../util/buildRes.js');
 const productModel = require('../model/product.model.js');
 class ProductController{
-    
+
     async getPaginatedProducts(req, res){
         try{
             const page = parseInt(req.query.page) || 1;
@@ -45,6 +45,23 @@ class ProductController{
             });
         }
     }
+
+    // async createProduct(req, res){
+    //     try{
+    //         const {start_date, type, breed, status, price, growth_time} = req.body;
+    //         const product = await productModel.create({
+    //             name: name,
+    //             price: price,
+    //             description: description
+    //         });
+    //         res.json(buildResponse(product, "Create product successfully", 200));
+    //     }
+    //     catch(err){
+    //         res.status(500).json({
+    //             message: err.message
+    //         });
+    //     }
+    // }
 }
 
 module.exports = new ProductController();

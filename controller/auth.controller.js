@@ -22,7 +22,12 @@ class AuthController{
                 return res.json(buildResponse({}, "Username or password is incorrect", 400));
             }
             const token = jwt.sign({id: farmer.id, role: 'farmer'}, process.env.JWT_SECRET);
-            res.json(buildResponse({token: token}, "Login successfully", 200));
+            res.json(buildResponse({
+                token: token,
+                username: farmer.dataValues.Username,
+                name: farmer.dataValues.Name,
+                address: farmer.dataValues.Address,
+            }, "Login successfully", 200));
         }
         catch(err){
             res.status(500).json({
@@ -50,7 +55,12 @@ class AuthController{
                 return res.json(buildResponse({}, "Username or password is incorrect", 400));
             }
             const token = jwt.sign({id: customer.id, role: 'customer'}, process.env.JWT_SECRET);
-            res.json(buildResponse({token: token}, "Login successfully", 200));
+            res.json(buildResponse({
+                token: token,
+                username: customer.dataValues.Username,
+                name: customer.dataValues.Name,
+                address: customer.dataValues.Address,
+            }, "Login successfully", 200));
         }
         catch(err){
             res.status(500).json({
