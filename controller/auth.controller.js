@@ -63,7 +63,7 @@ class AuthController{
         try{
             const {username, password, name, address, phone} = req.body;
             // const hashPassword = await bcrypt.hash(password, 10);
-            if(username === "" || password === "" || name === "" || address === "" || phone === ""){
+            if(!username|| !password|| !name || !address|| !phone){
                 return res.json(buildResponse({}, "Please fill in all fields", 400));
             }
             const farmer = await farmerModel.create({
@@ -86,9 +86,10 @@ class AuthController{
         try{
             const {username, password, name, address, phone} = req.body;
             // const hashPassword = await bcrypt.hash(password, 10);
-            if(username === "" || password === "" || name === "" || address === "" || phone === ""){
+            if(!username|| !password|| !name || !address|| !phone){
                 return res.json(buildResponse({}, "Please fill in all fields", 400));
             }
+
             const customer = await customerModel.create({
                 Username: username,
                 Password: password,
