@@ -13,6 +13,7 @@
       }
     ],
     "env": {
-      "DATABASE_URL": "mysql://avnadmin:AVNS_FoNW0QAcry1sKYai9Oe@tracker-data-tracker-data.j.aivencloud.com:13478/dbs-assm-smart-farm"
+      "DATABASE_URL": "mysql://avnadmin:AVNS_FoNW0QAcry1sKYai9Oe@tracker-data-tracker-data.j.aivencloud.com:13478/dbs-assm-smart-farm",
+      "JWT_SECRET": "baovjppro123"
     }
   }

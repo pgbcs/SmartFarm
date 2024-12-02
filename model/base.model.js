@@ -1,5 +1,4 @@
 const db = require('../config/db');
-const {Sequelize, DataTypes} = require('sequelize');
 
 class BaseModel{
     constructor(modelName, schema){
@@ -37,7 +36,16 @@ class BaseModel{
             throw new Error('Error when get all record'+err.message);
         }
     }
-
+    //lấy bản ghi theo điều kiện
+    async findOne(options){
+        try{
+            const result = await this.model.findOne(options);
+            return result;
+        }
+        catch(err){
+            throw new Error('Error when get record'+err.message);
+        }
+    }
     //Cập nhật bản ghi
     async update(data, options){
         try{
