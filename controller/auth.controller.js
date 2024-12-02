@@ -57,6 +57,46 @@ class AuthController{
                 message: err.message
             });
     }
-}
+    }
+
+    async farmerRegister(req, res){
+        try{
+            const {username, password, name, address, phone} = req.body;
+            // const hashPassword = await bcrypt.hash(password, 10);
+            const farmer = await farmerModel.create({
+                Username: username,
+                Password: password,
+                Name: name,
+                Adress: address,
+                Phone_number: phone
+            });
+            res.json(buildResponse(farmer, "Register successfully", 200));
+        }
+        catch(err){
+            res.status(500).json({
+                message: err.message
+            });
+        }
+    }
+
+    async customerRegister(req, res){
+        try{
+            const {username, password, name, address, phone} = req.body;
+            // const hashPassword = await bcrypt.hash(password, 10);
+            const customer = await customerModel.create({
+                Username: username,
+                Password: password,
+                Name: name,
+                Address: address,
+                Phone_number: phone
+            });
+            res.json(buildResponse(customer, "Register successfully", 200));
+        }
+        catch(err){
+            res.status(500).json({
+                message: err.message
+            });
+        }
+    }
 }
 module.exports = new AuthController();
