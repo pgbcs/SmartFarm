@@ -66,6 +66,16 @@ class AuthController{
             if(!username|| !password|| !name || !address|| !phone){
                 return res.json(buildResponse({}, "Please fill in all fields", 400));
             }
+
+            const check = await customerModel.findOne({
+                where: {
+                    username: username
+                }
+            });
+            if(check){
+                return res.json(buildResponse({}, "Username is already taken", 400));
+            }
+
             const farmer = await farmerModel.create({
                 Username: username,
                 Password: password,
@@ -89,7 +99,15 @@ class AuthController{
             if(!username|| !password|| !name || !address|| !phone){
                 return res.json(buildResponse({}, "Please fill in all fields", 400));
             }
-
+            const check = await customerModel.findOne({
+                where: {
+                    username: username
+                }
+            });
+            if(check){
+                return res.json(buildResponse({}, "Username is already taken", 400));
+            }
+            
             const customer = await customerModel.create({
                 Username: username,
                 Password: password,
