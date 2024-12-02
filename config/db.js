@@ -8,6 +8,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     timestamps: false,
   },
   dialect: 'mysql',
+  dialectModule: require('mysql2'),
   logging: false  // Tắt log SQL nếu không cần
 });
 
