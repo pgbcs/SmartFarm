@@ -53,6 +53,7 @@ class AuthController{
             const token = jwt.sign({id: customer.id, role: 'customer'}, process.env.JWT_SECRET);
             res.json(buildResponse({
                 token: token,
+                id: customer.id,
                 username: customer.Username,
                 name: customer.Name,
                 address: customer.Address,

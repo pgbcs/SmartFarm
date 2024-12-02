@@ -1,6 +1,6 @@
 const buildResponse = require('../util/buildRes.js');
 const orderModel = require('../model/order.model.js');
-const { Sequelize } = require('sequelize');
+
 
 class OrderController{
     async getPaginatedOrders(req, res){
@@ -42,6 +42,22 @@ class OrderController{
                 }
             });
             res.json(buildResponse(order, "Order detail", 200));
+        }
+        catch(err){
+            res.status(500).json({
+                message: err.message
+            });
+        }
+    }
+
+    async createOrder(req, res){
+        try{
+            const {customerID, productID} = req.body;
+            const order = await orderModel.create({
+                customerID: customerID,
+                productID: productID,
+            });
+            res.json(buildResponse(order, "Create order successfully", 200));
         }
         catch(err){
             res.status(500).json({

@@ -10,6 +10,7 @@ router.get('/cart', (req, res) => {});
 
 router.get('/orders/getAll', orderController.getPaginatedOrders); 
 router.get('/orders/getById', orderController.getOrderById);
+router.post('/orders/create', );
 
 router.get('/profile', (req, res) => {});
 
