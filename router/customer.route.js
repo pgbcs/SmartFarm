@@ -13,7 +13,7 @@ router.get("/products/getMyProducts", productController.getAllProductBelongToCus
 router.get('/products/getAll', productController.getPaginatedProducts);
 router.get('/products/getById', productController.getProductById);
 // router.get('/products', );
-router.get('/cart', (req, res) => {});
+// router.get('/cart', (req, res) => {});
 
 router.get('/orders/getAll', orderController.getPaginatedOrders); 
 router.get('/orders/getById', orderController.getOrderById);

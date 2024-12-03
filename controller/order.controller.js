@@ -4,6 +4,34 @@ const productModel = require('../model/product.model.js');
 
 
 class OrderController{
+    async getPaginatedOrdersForFarmer(req, res){
+        try{
+            const page = parseInt(req.query.page) ||1;
+            const perPage= parseInt(req.query.perPage) || 10;
+
+            const farmerID = parseInt(req.query.farmerID, 10); 
+
+            const [count, rows] = await orderModel.findAllWithPaginationForFarmer({
+                farmerID: farmerID,
+                offset: (page-1)*perPage,
+                limit: perPage
+            });
+
+            const totalPages =  Math.ceil(count/perPage);
+            res.json(buildResponse(rows, "List product", 200, {
+                metaInfo: {
+                    current: page,
+                    perPage: perPage,
+                    total: count,
+                    totalPages: totalPages
+                }
+            }));
+        }
+        catch(err){
+            res.status(500).json({
+                message: err.message});
+            }
+}
     async getPaginatedOrders(req, res){
         try{
             const page = parseInt(req.query.page) ||1;
@@ -166,7 +194,30 @@ class OrderController{
             res.status(500).json({
                 message: err.message
     });
+    }
+    }
+    async confirmOrder(req, res){
+        try{
+            const id = req.params.id;
+            const order = await orderModel.findOne({
+                id: id
+            });
+
+            if(order.Status !== "paid-pending"){
+                return res.json(buildResponse(null, "Order can not be confirmed", 400));
+            }
+            await orderModel.update(
+                id,{
+                Status: "accepted"
+            });
+            res.json(buildResponse(null, "Confirm order successfully", 200));
+        }
+        catch(err){
+            res.status(500).json({
+                message: err.message
+            });
+        }
+    }
 }
-}}
 
 module.exports = new OrderController(); 

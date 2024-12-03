@@ -130,7 +130,121 @@ class ProductModel extends BaseModel {
             console.error("Lỗi khi gọi thủ tục:", err);
             throw new Error('Error when fetching animal product detail');   
     }
-}
+    }
+    
+    async getAllProductBelongtoFarmer(options) {
+        const { farmerID, offset, limit } = options;
+
+        try {
+            const [result] = await this.db.promise().query(
+                `CALL get_farmer_products(?, ?, ?)`,
+                [farmerID, limit, offset]
+            );
+        
+            return [result[1][0]['COUNT(*)'], result[0]];
+        } catch (err) {
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when fetching farmer products');
+        }
+    }
+
+    async createProduct(options) {
+        const { Start_date, Type,Breed , Price, Growth_time, gen_type } = options;
+        try {
+            const [result] = await this.db.promise().query(
+                `CALL create_product(?, ?, ?, ?, ?, ?, ?)`,
+                [name, price, quantity, description, farmerID, category, status]
+            );
+            return result[0];
+        } catch (err) {
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when creating product');
+        }
+    }
+
+    async updateProduct(options) {
+        const { id, name, price, quantity, description, farmerID, category, status } = options;
+        try {
+            const [result] = await this.db.promise().query(
+                `CALL update_product(?, ?, ?, ?, ?, ?, ?, ?)`,
+                [id, name, price, quantity, description, farmerID, category, status]
+            );
+            return result[0];
+        } catch (err) {
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when updating product');
+        }
+    }
+
+    async deleteProduct(options) {
+        const { id } = options;
+        try {
+            const [result] = await this.db.promise().query(
+                `CALL delete_product(?)`,
+                [id]
+            );
+            return result[0];
+        } catch (err) {
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when deleting product');
+        }
+    }
+
+    async createCrop(options) {
+        const { Start_date, Type, Breed, Price, Growth_time, Area, Estimated_harvesting_cost, Soil_ID } = options;
+        console.log(options);
+        try {
+            const [result] = await this.db.promise().query(
+                `CALL insert_crop(?, ?, ?, ?, ?, ?,?,?)`,
+                [Start_date, Type, Breed, Price, Growth_time, Area, Estimated_harvesting_cost, Soil_ID]
+            );
+            return result[0];
+        } catch (err) {
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when creating crop');
+        }
+    }
+
+    async createAqua(options) {
+        const { Start_date, Type, Breed, Price, Growth_time, Pond_ID } = options;
+        try {
+            const [result] = await this.db.promise().query(
+                `CALL insert_aqua(?, ?, ?, ?, ?, ?)`,
+                [Start_date, Type, Breed, Price, Growth_time, Pond_ID]
+            );
+            return result[0];
+        } catch (err) {
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when creating aqua');
+        }
+    }
+
+    async createPoultry(options) {
+        const { Start_date, Type, Breed, Price, Growth_time, Gender, Start_weight, shelter_ID,Egg } = options;
+        try {
+            const [result] = await this.db.promise().query(
+                `CALL insert_animal_poultry(?, ?, ?, ?, ?, ?,?,?,?)`,
+                [Start_date, Type, Breed, Price, Growth_time, Gender, Start_weight, shelter_ID, Egg]
+            );
+            return result[0];
+        } catch (err) {
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when creating poultry');
+        }
+    }
+
+    async createLiveStock(options) {
+        const { Start_date, Type, Breed, Price, Growth_time, Gender, Start_weight, shelter_ID }= options;
+        try {
+            const [result] = await this.db.promise().query(
+                `CALL insert_animal_livestock(?, ?, ?, ?, ?, ?, ?, ?)`,
+                [Start_date, Type, Breed, Price, Growth_time, Gender, Start_weight, shelter_ID]);
+            return result[0];
+        }catch(err){
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when creating livestock');
+        }  
+    }
 }
 
 module.exports = new ProductModel();

@@ -53,11 +53,12 @@ class BaseModel {
   async update(id, data) {
     const setClause = Object.keys(data).map(key => `${key} = ?`).join(', ');
     const values = Object.values(data);
-
+    // console.log(this.tableName);
     const query = `UPDATE ${this.tableName} SET ${setClause} WHERE ID = ?`;
     console.log(query);
     try {
       const [result] = await this.db.promise().execute(query, [...values, id]);
+      
       return result;  // Trả về kết quả của câu lệnh update
     } catch (err) {
       throw new Error('Error updating record: ' + err.message);

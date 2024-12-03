@@ -80,12 +80,72 @@ class ProductController{
 
     async createProduct(req, res){
         try{
-            const {start_date, type, breed, status, price, growth_time, genType} = req.body;
-            const product = await productModel.create({
-                name: name,
-                price: price,
-                description: description
-            });
+            let product = null;
+            const {start_date, type, breed, price, growth_time, genType} = req.body;
+            console.log(req.body);
+            if(genType==="animal"){
+                const {start_weight, gender, poultry, shelter_ID} = req.body.animal;
+                if(poultry){
+                    product = await productModel.createPoultry({
+                        Start_date: start_date,
+                        Type: type,
+                        Breed: breed,
+                        Price: price,
+                        Growth_time: growth_time,
+                        gen_type: genType,
+                        Start_weight: start_weight,
+                        Gender: gender,
+                        Egg: poultry.egg,
+                        shelter_ID: shelter_ID,
+                    });
+                }else{
+                    product = await productModel.createLiveStock({
+                        Start_date: start_date,
+                        Type: type,
+                        Breed: breed,
+                        Price: price,
+                        Growth_time: growth_time,
+                        gen_type: genType,
+                        Start_weight: start_weight,});
+                }   
+                // product = await productModel.create({
+            }
+            else if(genType==="crop"){
+                const {area, estimated_haversting_cost,soil_ID} = req.body.crop;
+                product = await productModel.createCrop({
+                    Start_date: start_date,
+                    Type: type,
+                    Breed: breed,
+                    Price: price,
+                    Growth_time: growth_time,
+                    gen_type: genType,
+                    Area: area,
+                    Estimated_harvesting_cost: estimated_haversting_cost,
+                    Soil_ID: soil_ID
+                });
+            }   
+            else if(genType==="aqua"){
+                const {pond_ID} = req.body.aqua;
+                product = await productModel.createAqua({
+                    Start_date: start_date,
+                    Type: type,
+                    Breed: breed,
+                    Price: price,
+                    Growth_time: growth_time,
+                    gen_type: genType,
+                    Pond_ID: pond_ID
+                });
+            }
+            // const product = await productModel.create({
+            //     Start_date: start_date,
+            //     Type: type,
+            //     Breed: breed,
+            //     Status: "not sold",
+            //     Price: price,
+            //     Growth_time: growth_time,
+            //     gen_type: genType,
+            // });
+            // console.log(data);
             res.json(buildResponse(product, "Create product successfully", 200));
         }
         catch(err){
@@ -93,6 +153,31 @@ class ProductController{
                 message: err.message
             });
         }
+    }
+
+    async getAllProductBelongToFarmer(req, res){
+        const page = parseInt(req.query.page) || 1;
+        const perPage= parseInt(req.query.perPage) || 10;
+        const farmerID = parseInt(req.query.farmerID, 10);
+
+        if(!farmerID){
+            return res.json(buildResponse({}, "Farmer ID is required", 400));
+        }
+        const [count, rows] = await productModel.getAllProductBelongtoFarmer({
+            farmerID: farmerID,
+            offset: (page-1)*perPage,
+            limit: perPage,
+        });
+
+        const totalPages =  Math.ceil(count/perPage);
+        res.json(buildResponse(rows, "List product", 200, {
+            metaInfo: {
+                current: page,
+                perPage: perPage,
+                total: count,
+                totalPages: totalPages,
+            }
+        }));
     }
 }
 
