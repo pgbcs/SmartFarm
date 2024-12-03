@@ -23,6 +23,22 @@ class ProductModel extends BaseModel {
         }
     }
 
+    async getAllProductBelongtoCustomer(options) {
+        const { customerID, offset, limit, inorder } = options;
+
+        try {
+            // Sử dụng promise() để hỗ trợ async/await
+            const [result] = await this.db.promise().query(
+                `CALL get_customer_products(?, ?, ?, ?)`,
+                [customerID, inorder, limit, offset]
+            );
+            // Trả về kết quả sau khi gọi thủ tục
+            return [result[1][0]['COUNT(*)'], result[0]];
+        } catch (err) {
+            console.error("Lỗi khi gọi thủ tục:", err);
+            throw new Error('Error when fetching customer products');}
+    }   
+
     async getDetailProduct(options) {
         const { productID } = options;
 

@@ -53,6 +53,31 @@ class ProductController{
         }
     }
 
+    async getAllProductBelongToCustomer(req, res){
+        const page = parseInt(req.query.page) || 1;
+        const perPage= parseInt(req.query.perPage) || 10;
+        const customerID = parseInt(req.query.customerID, 10);
+        const inorder = req.query.inorder||0;
+        if(!customerID){
+            return res.json(buildResponse({}, "Customer ID is required", 400));
+        }
+        const [count, rows] = await productModel.getAllProductBelongtoCustomer({
+            customerID: customerID,
+            offset: (page-1)*perPage,
+            limit: perPage,
+            inorder: inorder
+        });
+        const totalPages =  Math.ceil(count/perPage);
+        res.json(buildResponse(rows, "List product", 200, {
+            metaInfo: {
+                current: page,
+                perPage: perPage,
+                total: count,
+                totalPages: totalPages,
+            }
+        }));
+    }
+
     async createProduct(req, res){
         try{
             const {start_date, type, breed, status, price, growth_time, genType} = req.body;
