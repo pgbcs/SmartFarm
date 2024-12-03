@@ -32,7 +32,18 @@ class ProductController{
     async getProductById(req, res){
         try{
             const id = req.query.id;
-            const product = await productModel.findOne({id: id});
+            const genType = req.query.genType;
+            let product = null;
+            if(genType === 'aqua'){
+                product = await productModel.getDetailAquaProduct({id: id});
+            }
+            else if(genType === 'crop'){ 
+                product = await productModel.getDetailCropProduct({id: id});
+            }
+            else if(genType === 'animal'){
+                product = await productModel.getDetailAnimalProduct({id: id});
+            }
+            // const product = await productModel.getDetailProduct({id: id});
             res.json(buildResponse(product, "Product detail", 200));
         }
         catch(err){
@@ -42,22 +53,22 @@ class ProductController{
         }
     }
 
-    // async createProduct(req, res){
-    //     try{
-    //         const {start_date, type, breed, status, price, growth_time} = req.body;
-    //         const product = await productModel.create({
-    //             name: name,
-    //             price: price,
-    //             description: description
-    //         });
-    //         res.json(buildResponse(product, "Create product successfully", 200));
-    //     }
-    //     catch(err){
-    //         res.status(500).json({
-    //             message: err.message
-    //         });
-    //     }
-    // }
+    async createProduct(req, res){
+        try{
+            const {start_date, type, breed, status, price, growth_time, genType} = req.body;
+            const product = await productModel.create({
+                name: name,
+                price: price,
+                description: description
+            });
+            res.json(buildResponse(product, "Create product successfully", 200));
+        }
+        catch(err){
+            res.status(500).json({
+                message: err.message
+            });
+        }
+    }
 }
 
 module.exports = new ProductController();

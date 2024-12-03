@@ -44,6 +44,7 @@ class BaseModel {
     try {
         const [rows] = await this.db.promise().execute(query, values);
         return rows[0]; // Trả về bản ghi đầu tiên
+  
     } catch (err) {
         throw new Error('Error fetching record: ' + err.message);
     }
@@ -54,7 +55,7 @@ class BaseModel {
     const values = Object.values(data);
 
     const query = `UPDATE ${this.tableName} SET ${setClause} WHERE ID = ?`;
-
+    console.log(query);
     try {
       const [result] = await this.db.promise().execute(query, [...values, id]);
       return result;  // Trả về kết quả của câu lệnh update
@@ -66,7 +67,7 @@ class BaseModel {
   // Xóa bản ghi
   async delete(id) {
     const query = `DELETE FROM ${this.tableName} WHERE ID = ?`;
-
+    // console.log(query); 
     try {
       const [result] = await this.db.promise().execute(query, [id]);
       return result;  // Trả về kết quả của câu lệnh delete

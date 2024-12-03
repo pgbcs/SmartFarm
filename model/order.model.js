@@ -1,5 +1,5 @@
 const BaseModel = require('./base.model');
-const { DataTypes } = require('sequelize');
+// const { DataTypes } = require('sequelize');
 
 class OrderModel extends BaseModel{
     constructor(){
@@ -21,10 +21,7 @@ class OrderModel extends BaseModel{
         catch(err){
             throw new Error('Error fetching all records: ' + err.message);
         }
-    }
-
-    
-
+    } 
 }
 
 module.exports = new OrderModel();
